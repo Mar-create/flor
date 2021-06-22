@@ -12,6 +12,12 @@ class FlorController extends Controller
         ['id' => 3, 'nome'=>'Papoula'],
         ['id' => 4, 'nome'=>'Crisantemo']
     ];
+    public function __construct(){
+        $flor = session('flor');
+        if(!isset($flor)) {
+            session(['flor' => $this->flor]);
+        }
+    }
     /**
      * Display a listing of the resource.
      *
@@ -19,11 +25,8 @@ class FlorController extends Controller
      */
     public function index()
     {
-       echo '<ol>';
-       foreach ($this->flor as $flor){
-           echo '<li>' . $flor['nome'] . '</li>';
-       }
-       echo '</ol>';
+       $flor = session('flor');
+       return view('flor.index', compact(['flor']));
     }
 
     /**
@@ -33,7 +36,7 @@ class FlorController extends Controller
      */
     public function create()
     {
-        //
+        return view('flor.create');
     }
 
     /**
@@ -44,7 +47,13 @@ class FlorController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $flor = session('flor');
+        $id = count($flor) + 1;
+        $nome = $request->nome;
+        $dados = ['id' =>$id, 'nome'=>$nome];
+        $flor[] = $dados;
+        session(['flor' => $flor]);
+        return redirect()->route('flor.index');
     }
 
     /**
@@ -55,7 +64,9 @@ class FlorController extends Controller
      */
     public function show($id)
     {
-        //
+        $flor = session('flor');
+        $flor = $flor[$id - 1];
+        return view('flor.info', compact(['flor']));
     }
 
     /**
@@ -66,7 +77,10 @@ class FlorController extends Controller
      */
     public function edit($id)
     {
-        //
+        $flor = session('flor');
+        $index = $this->getIndex($id, $flor);
+        $flor = $flor[$index];
+        return view('flor.edit', compact(['flor']));
     }
 
     /**
@@ -78,7 +92,11 @@ class FlorController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $flor = session('flor');
+        $index = $this->getIndex($id, $flor);
+        $flor[$index]['nome'] = $request->nome;
+        session(['flor' => $flor]);
+        return redirect()->route('flor.index');
     }
 
     /**
@@ -89,6 +107,16 @@ class FlorController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $flor = session('flor');
+        $index = $this->getIndex($id, $flor);
+        array_splice($flor, $index, 1);
+        session(['flor' => $flor]);
+        return redirect()->route('flor.index');
+    }
+
+    private function getIndex($id, $flor){
+        $ids = array_column($flor, 'id');
+        $index = array_search($id, $ids);
+        return $index;
     }
 }
