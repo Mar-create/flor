@@ -26,7 +26,10 @@ class FlorController extends Controller
     public function index()
     {
        $flor = session('flor');
-       return view('flor.index', compact(['flor']));
+       $titulo = 'Floricultura';
+      // return view('flor.index', compact(['flor', 'titulo']));
+       return view('flor.index', ['flor'=>$flor, 'titulo'=>$titulo]);
+       
     }
 
     /**
