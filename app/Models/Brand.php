@@ -7,5 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Brand extends Model
 {
+    protected $fillable = ['name'];
     use HasFactory;
+}
+class Flor extends Model
+{
+    protected $fillable = ['name','color'];
+    use Hasfactory;
 }
