@@ -1,0 +1,12 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class Vaso extends Model
+{
+    protected $fillable = ['color','size'];
+    use HasFactory;
+}
