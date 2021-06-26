@@ -14,7 +14,9 @@ use App\Http\Controllers\VasoController;
 |
 */
 Route::get('/' , [VasoController::class,'index']);
-Route::resource('dogs', VasoController::class);
+Route::resource('vasos', VasoController::class);
+
+
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
